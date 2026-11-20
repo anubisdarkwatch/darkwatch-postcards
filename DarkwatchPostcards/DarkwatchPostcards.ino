@@ -25,7 +25,7 @@ RxState lastState=RxState::Waiting;
 unsigned lastReport=0;
 uint32_t lastPaint=0;
 bool listening=false, ready=false, haveImage=false, clockBus=false;
-int cardNumber=0;
+int cardNumber=0, cardVis=8;
 bool testPictureAvailable=false;
 char received[32]="Clock unset";
 char notice[80]="";
@@ -53,7 +53,7 @@ void showPage(bool picture) {
         char number[22];
         snprintf(number,sizeof(number),"RX %05d",cardNumber);
         label(cardNumber?number:"PREVIEW",660,96,2);
-        label("ROBOT 36",660,132,2);
+        label(Robot36::modeName(cardVis),660,132,2);
         if (strlen(received)==19) {
             char date[11]; memcpy(date,received,10); date[10]=0;
             label(date,660,188,2); label(received+11,660,212,2);
@@ -66,7 +66,7 @@ void showPage(bool picture) {
         screen.setTextColor(TFT_WHITE);
         label("DARKWATCH POSTCARDS",28,20,5);
         screen.setTextColor(TFT_BLACK);
-        label("ROBOT 36   v0.1.3",30,111,4);
+        label("Robot 36 / PD90 / PD120   v0.2.0",30,111,3);
         label(notice,30,190,3);
         if (listening && audioStatus.reports) {
             char line[80];
@@ -94,7 +94,7 @@ void startListening() {
     audioStatus=RxStatus{};
     lastLevel=-999; lastGroup=-1; lastReport=0; lastState=RxState::Waiting;
     listening=receiver.start();
-    strcpy(notice,listening?"Listening for Robot 36":"Microphone start failed. Press OK.");
+    strcpy(notice,listening?"Listening for SSTV":"Microphone start failed. Press OK.");
     showPage(false);
     lastPaint=millis();
 }
@@ -154,7 +154,7 @@ int saveCard() {
         File f;
         if (n<=99999 && !SD.exists(path)) f=SD.open(temp,"w");
         char header[72];
-        int len=snprintf(header,sizeof(header),"P5\n# %s\n320 240\n255\n",received);
+        int len=snprintf(header,sizeof(header),"P5\n# %s\n# VIS %d\n320 240\n255\n",received,cardVis);
         bool ok=f && f.write((const uint8_t*)header,len)==(size_t)len && f.write(frame,frameBytes)==frameBytes;
         if (f) { f.flush(); ok=ok && !f.getWriteError() && f.size()==frameBytes+len; f.close(); }
         if (!ok || !SD.rename(temp,path)) { SD.remove(temp); n=0; }
@@ -171,14 +171,20 @@ void browse(int direction) {
             File f=SD.open(path);
             if (f && f.readStringUntil('\n')=="P5") {
                 String stamp=f.readStringUntil('\n');
-                if (stamp.startsWith("# ") && f.readStringUntil('\n')=="320 240" && f.readStringUntil('\n')=="255" &&
+                String dimensions=f.readStringUntil('\n');
+                int savedVis=8; // Original single-mode album files omit VIS.
+                if (dimensions.startsWith("# VIS ")) {
+                    savedVis=dimensions.substring(6).toInt();
+                    dimensions=f.readStringUntil('\n');
+                }
+                if (stamp.startsWith("# ") && dimensions=="320 240" && f.readStringUntil('\n')=="255" &&
                     f.size()-f.position()==frameBytes) {
                     // Keep the displayed image intact if the card is removed mid-read.
                     uint8_t *next=(uint8_t*)heap_caps_malloc(frameBytes,MALLOC_CAP_SPIRAM|MALLOC_CAP_8BIT);
                     if (next && f.read(next,frameBytes)==frameBytes) {
                         memcpy(frame,next,frameBytes);
                         stamp.substring(2).toCharArray(received,sizeof(received));
-                        loaded=true; cardNumber=n;
+                        loaded=true; cardNumber=n; cardVis=savedVis;
                     }
                     free(next);
                 }
@@ -284,7 +290,7 @@ void runMicTest() {
         if ((i&4095)==0) delay(1);
     }
     free(pcm);
-    if (complete) { readClock(); cardNumber=saveCard(); haveImage=true; testPictureAvailable=true; }
+    if (complete) { cardVis=decoder.vis(); readClock(); cardNumber=saveCard(); haveImage=true; testPictureAvailable=true; }
     auto result=tones.result();
     char line[80];
     micTestPage("Microphone test result");
@@ -340,7 +346,7 @@ void loop() {
     }
     if (!receiver.latest(audioStatus)) { delay(15); return; }
     if (audioStatus.state==RxState::Complete) {
-        stopListening(); readClock(); cardNumber=saveCard(); haveImage=true;
+        stopListening(); cardVis=audioStatus.vis; readClock(); cardNumber=saveCard(); haveImage=true;
         Serial1.printf("Frame complete; album index %d\n",cardNumber);
         showPage(true); return;
     }
@@ -358,11 +364,11 @@ void loop() {
     if (audioStatus.reports && changed && millis()-lastPaint>=3000) {
         switch (audioStatus.state) {
             case RxState::Locked:
-                snprintf(notice,sizeof(notice),"Robot 36 locked   %d / 240 lines",audioStatus.rows); break;
+                snprintf(notice,sizeof(notice),"%s locked   %d / 240 rows",Robot36::modeName(audioStatus.vis),audioStatus.rows); break;
             case RxState::Lost: strcpy(notice,"Sync lost. Replay from the start."); break;
             case RxState::Unsupported:
                 snprintf(notice,sizeof(notice),"Other SSTV mode (VIS %d)",audioStatus.vis); break;
-            default: strcpy(notice,audioStatus.peakToPeak<=2?"Flat mic input":"Waiting for Robot 36 header"); break;
+            default: strcpy(notice,audioStatus.peakToPeak<=2?"Flat mic input":"Waiting for SSTV header"); break;
         }
         lastLevel=audioStatus.dbfs; lastGroup=group; lastState=audioStatus.state;
         showPage(false);

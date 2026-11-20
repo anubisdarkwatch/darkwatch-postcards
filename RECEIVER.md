@@ -1,4 +1,14 @@
-# Darkwatch Postcards 0.1.3
+# Darkwatch Postcards 0.2.0
+
+Tap **AI/OK** and start the audio from the beginning. The receiver detects Robot 36, PD90, and PD120 from the VIS header. Use normal listening for both PD modes. The 60-second microphone diagnostic is designed for the shorter Robot 36 speaker check.
+
+| Mode | VIS | On-air image | Approximate playback |
+| --- | --- | --- | --- |
+| Robot 36 | 8 | 320 × 240 | 37 seconds |
+| PD90 | 99 | 320 × 256 | 91 seconds |
+| PD120 | 95 | 640 × 496 | 127 seconds |
+
+The Sticky samples luminance from the entire transmission into its existing 320 × 240 grayscale album format. The counter tracks output rows. Saved cards retain their mode and older album files open as Robot 36.
 ## Receiver fix
 
 Version 0.1.3 removes a slowly changing microphone baseline before estimating SSTV tone frequency. On a real Sticky recording with about +1,355 counts of DC bias, the previous decoder measured the pilot correctly in its separate mic test but failed to acquire the header. Replaying the unmodified recording through this version recovered all 240 rows. The recovered grayscale frame had a pixel correlation of 0.954 against the source postcard. These are desktop replays of an actual board capture. Live reception on a reflashed Sticky still needs confirmation.
@@ -7,7 +17,7 @@ For a quick check after updating, **tap AI/OK** for normal listening and play DW
 
 ## Check the sound reaching the Sticky
 
-On a Sticky already running Darkwatch Postcards, keep your existing factory backup. Write the v0.1.3 merged BIN at **0x0** with full-chip erase off. Reset and confirm **ROBOT 36 v0.1.3**.
+On a Sticky already running Darkwatch Postcards, keep your existing factory backup. Write the v0.2.0 merged BIN at **0x0** with full-chip erase off. Reset and confirm **Robot 36 / PD90 / PD120 v0.2.0**.
 
 1. Optionally insert a writable FAT32 microSD card. A test recording takes about 1.92 MB.
 2. Hold **AI/OK** for two seconds and release. When **Play Speaker Check from the start** appears, start `postcards/DW-001-Speaker-Check.wav` immediately. Keep the lower microphone opening clear.
@@ -23,7 +33,7 @@ The screen samples status every few seconds. Speak near the bottom microphone op
 | During playback | Meaning and next check |
 |---|---|
 | **Flat mic input**, peak-to-peak 0–2 | The audio stream is returning nearly identical values. If the values stay flat through a few seconds of speech and playback, photograph the level, span and sample-rate readouts. |
-| Level responds, **Waiting for Robot 36 header** | The microphone receives changing samples. Move the speaker a few inches from the mic opening, start at moderate volume, and replay from the very beginning. A signal that reaches 0 dBFS or repeatedly spans almost 65535 counts may be clipping. |
+| Level responds, **Waiting for SSTV header** | The microphone receives changing samples. Move the speaker a few inches from the mic opening, start at moderate volume, and replay from the very beginning. A signal that reaches 0 dBFS or repeatedly spans almost 65535 counts may be clipping. |
 | **Robot 36 locked**, then **Sync lost** | The header decoded, but the picture lost line timing. Keep speaker distance fixed. The receiver is already listening for the next header. |
 | **Mic read failed** or **Microphone start failed** | Press AI/OK once. If it recurs, report the exact status and serial output. |
 
@@ -49,7 +59,7 @@ The merged binary is for the **3.97-inch reTerminal Sticky, ESP32-S3**. Flashing
    Verify the read finished successfully and the file contains **33,554,432 bytes**. Keep that file outside the project directory.
 3. From the extracted project folder, write the merged image at **0x0**.
 
-       py -m esptool --chip esp32s3 --port COM7 write-flash 0x0 firmware/Darkwatch-Postcards-Sticky-v0.1.3.bin
+       py -m esptool --chip esp32s3 --port COM7 write-flash 0x0 docs/firmware/Darkwatch-Postcards-Sticky-v0.2.0.bin
 
    In a graphical ESP flasher, select ESP32-S3, choose the CH343 port and load only the merged BIN at 0x0. Leave full-chip erase disabled. The bundle contains a bootloader, partition table, boot selection data and application. This build uses Seeed's XIAO_ESP32S3 board profile and its 8 MB partition layout on the Sticky's 32 MB flash.
 4. Wait for the write verification and reset. If the unit stays in download mode, briefly press Reset.
@@ -62,8 +72,7 @@ To restore your original setup, write your full verified backup to 0x0 using the
 - Captures are 8-bit grayscale PGM files in `/POSTCARDS/RX00001.PGM`, `RX00002.PGM`, and so on. The e-paper view uses dithering. The file header contains the board clock time if its date appears valid. The firmware does not set or synchronize the clock.
 - **UP** and **DOWN** open the latest saved card from the listening screen and then cycle through the album. You can also swipe across a displayed card. Browsing while listening cancels that reception.
 - **RAM only** means the image is visible but the save failed or no card was inserted. Starting another capture, opening another saved card or resetting discards an unsaved image.
-- Reception begins with the Robot 36 identification header (VIS 8). Start listening before the sender starts. Other SSTV modes, including PD120, need their own decoder. The first version draws the complete frame in one e-paper refresh.
-- For a live ham transmission, tune a separate receiver to the announced frequency and modulation, and play its speaker near the Sticky. The same receiver firmware handles both recorded and live Robot 36 audio.
+- Start listening before the identification header. For live reception, play a separate radio receiver’s speaker near the Sticky. The same decoder accepts live or recorded audio.
 - For diagnostics, open the CH343 serial port at **115200** after flashing. The repeating line reports microphone level, span, measured input rate, completed rows and state (0 waiting, 1 locked, 2 sync lost, 3 unsupported mode). A completed frame prints its album index. A signal lost mid-frame is discarded after repeated missed line syncs; the receiver listens for the next header. For a blank screen, press Reset and watch for `Display init failed`.
 
 ## Verification
@@ -86,9 +95,9 @@ Install Arduino-ESP32 **3.3.7**, **bb_captouch 1.3.1**, and Seeed_GFX2 from comm
 For standalone artwork, use a 4:3 source with bold strokes. The encoder fits and pads other aspect ratios. With Python 3.12:
 
     python -m pip install PySSTV==0.5.10
-    python tools/encode.py postcard.png postcard.wav
+    python tools/encode.py postcard.png postcard.wav --mode pd120
 
-To repeat the host tests, install NumPy, Pillow and ffmpeg and run `python tools/verify.py` on Linux or macOS with a C++ compiler. For the optional reference tests, download Slide01.wav, Slide02.wav and their two matching SlideNN-Robot-36-Color.jpg files from ARISS, then pass `--ariss DIRECTORY`. Reference recordings are linked below.
+To repeat the host tests, install NumPy, Pillow and ffmpeg and run `python tools/verify.py` on Linux or macOS with a C++ compiler. Run `python tools/verify_pd.py` with PySSTV installed for PD90 and PD120 coverage. For the optional reference tests, download Slide01.wav, Slide02.wav and their two matching SlideNN-Robot-36-Color.jpg files from ARISS, then pass `--ariss DIRECTORY`. Reference recordings are linked below.
 
 ## Project references
 

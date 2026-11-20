@@ -83,7 +83,7 @@ void AudioReceiver::capture() {
             auto event=decoder.push(samples[i]);
             if (event==Robot36::None) continue;
             changed=true;
-            if (event==Robot36::Locked) report.state=RxState::Locked;
+            if (event==Robot36::Locked) { report.state=RxState::Locked; report.vis=decoder.vis(); }
             if (event==Robot36::Lost) report.state=RxState::Lost;
             if (event==Robot36::OtherMode) { report.state=RxState::Unsupported; report.vis=decoder.vis(); }
             if (event==Robot36::Complete) {

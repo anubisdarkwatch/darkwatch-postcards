@@ -14,13 +14,13 @@
   <header><a class="brand" href="https://www.anubisdarkwatch.com"><img src="./anubis.png" alt=""><strong>ANUBIS <span>DARKWATCH</span></strong></a><a href="https://github.com/anubisdarkwatch/darkwatch-postcards">GitHub ↗</a></header>
   <main>
     <section class="intro">
-      <div><p class="eyebrow">ROBOT 36 &nbsp;/&nbsp; SSTV RECEIVER</p>
+      <div><p class="eyebrow">ROBOT 36 · PD90 · PD120</p>
         <h1>Darkwatch<br><em>Postcards</em></h1>
-        <p class="lead">Turn a sound into a postcard. Play a Robot 36 transmission near your Sticky and watch the picture appear on e-paper.</p>
+        <p class="lead">Turn a sound into a postcard. Play a Robot 36, PD90, or PD120 transmission near your Sticky and watch the picture appear on e-paper.</p>
       </div>
       <figure><div class="stamp" aria-hidden="true"><img src="./anubis.png" alt=""></div><img src="./sticky.webp" alt="The Sticky displaying the decoded Anubis postcard on e-paper"><figcaption><b>DW-001</b><span>Received on reTerminal Sticky</span></figcaption></figure>
     </section>
-    <section class="panel"><p class="eyebrow">FIRMWARE &nbsp;/&nbsp; v0.1.3</p>
+    <section class="panel"><p class="eyebrow">FIRMWARE &nbsp;/&nbsp; v0.2.0</p>
       <h2>Install on your Sticky</h2>
       <p>For the 3.97-inch Seeed Studio reTerminal Sticky (ESP32-S3). Installation replaces the firmware and partition layout. Before your first install, save a <a href="https://github.com/anubisdarkwatch/darkwatch-postcards/blob/main/RECEIVER.md#install-on-a-seeed-reterminal-sticky">full factory backup</a>.</p>
       <p>Connect the Sticky with a USB data cable, close any serial monitor, then select its CH343 port. When prompted, leave <strong>Erase device</strong> unchecked.</p>
@@ -30,19 +30,24 @@
           <span slot="unsupported">Open this page in desktop Chrome or Edge to connect via USB.</span>
           <span slot="not-allowed">Open this page over HTTPS or localhost to connect via USB.</span>
         </esp-web-install-button>
-        <a download href="./firmware/Darkwatch-Postcards-Sticky-v0.1.3.bin">Download BIN ↓</a>
+        <a download href="./firmware/Darkwatch-Postcards-Sticky-v0.2.0.bin">Download BIN ↓</a>
       </div>
       <p id="status" role="status">Loading USB installer…</p>
       <noscript>Enable JavaScript for USB installation, or flash the BIN at 0x0 using esptool.</noscript>
     </section>
     <section class="panel"><p class="eyebrow">TEST TRANSMISSION &nbsp;/&nbsp; DW–001</p>
       <h2>Receive your first postcard</h2>
-      <p>Tap <strong>AI/OK</strong> and wait for the listening screen. Place a speaker a few inches from the lower microphone, set a moderate volume, and play the track from the start. A full picture takes about 37 seconds.</p>
+      <p>Tap <strong>AI/OK</strong> and wait for the listening screen. Place a speaker a few inches from the lower microphone, set a moderate volume, and play the track from the start. The Sticky detects the mode automatically and saves a 320 × 240 grayscale postcard.</p>
       <div class="wave" aria-hidden="true"><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i></div>
+      <p><strong>Robot 36</strong> · 37 seconds</p>
       <audio controls preload="none" aria-label="DW-001 Robot 36 transmission" src="./postcards/DW-001-Robot36.wav"></audio>
+      <p><strong>PD90</strong> · 1 min 31 sec</p>
+      <audio controls preload="none" aria-label="DW-001 PD90 transmission" src="./postcards/DW-001-PD90.flac"></audio>
+      <p><strong>PD120</strong> · 2 min 7 sec</p>
+      <audio controls preload="none" aria-label="DW-001 PD120 transmission" src="./postcards/DW-001-PD120.flac"></audio>
       <details><summary>Check the microphone</summary><p>Hold AI/OK for two seconds and release. When the Sticky prompts you, play the speaker check from the beginning. Look for a pilot near 1,900 Hz, header lock, and 240 rows.</p>
         <audio controls preload="none" aria-label="DW-001 speaker check" src="./postcards/DW-001-Speaker-Check.wav"></audio></details>
     </section>
-    <footer><span class="signature">CYBER // RF // MAKER</span><a download href="./downloads/Darkwatch-Postcards-v0.1.3.zip">Download v0.1.3 source kit ↓</a><a href="https://github.com/anubisdarkwatch/darkwatch-postcards/blob/main/RECEIVER.md">Receiver guide ↗</a></footer>
+    <footer><span class="signature">CYBER // RF // MAKER</span><a href="https://github.com/anubisdarkwatch/darkwatch-postcards/archive/refs/heads/main.zip">Download project source ↓</a><a href="https://github.com/anubisdarkwatch/darkwatch-postcards/blob/main/RECEIVER.md">Receiver guide ↗</a></footer>
   </main>
 </body></html>

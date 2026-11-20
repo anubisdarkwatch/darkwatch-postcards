@@ -7,13 +7,13 @@ int main() {
     int16_t sample;
     while (fread(&sample,sizeof(sample),1,stdin)==1) {
         auto event=rx.push(sample);
-        if (event==Robot36::Locked) fprintf(stderr,"Robot 36 header locked\n");
+        if (event==Robot36::Locked) fprintf(stderr,"%s header locked\n",Robot36::modeName(rx.vis()));
         if (event==Robot36::Lost) fprintf(stderr,"Sync lost\n");
         if (event==Robot36::Complete) {
             printf("P5\n320 240\n255\n");
             return fwrite(image,1,sizeof(image),stdout)==sizeof(image) ? 0 : 2;
         }
     }
-    fprintf(stderr,"No complete Robot 36 frame; rows=%d\n",rx.rows());
+    fprintf(stderr,"No complete SSTV frame; rows=%d\n",rx.rows());
     return 1;
 }

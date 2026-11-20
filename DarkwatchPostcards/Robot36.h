@@ -12,6 +12,7 @@ public:
     void reset();
     int rows() const { return row; }
     bool receiving() const { return phase==Picture; }
+    static const char *modeName(int vis);
     int vis() const { return mode; }
 private:
     enum Phase { Search, Header, Picture } phase = Search;
@@ -26,5 +27,9 @@ private:
     int bitSum = 0, bitCount = 0, bits = 0, mode = 0;
     int row = 0, rowTime = 0, syncRun = 0, missed = 0, pixel = 0;
     bool aligned = false;
+    // PD modes carry two luminance lines separated by shared chroma.
+    int pdLine = 0, pdHeight = 0, scanUs = 0, nextPixel = 0;
+    Event pushPd(float hz, bool sync);
+    int pdSampleTime() const;
     float level(float sample);
 };
