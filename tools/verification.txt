@@ -1,0 +1,13 @@
+DW-001: full frame, reference correlation 0.970
+Quiet playback + noise: full frame, reference correlation 0.969
+Speaker simulation (echo + noise): full frame, reference correlation 0.936
+Noise only no complete frame
+Quiet mic, DC offset +1355: full frame, reference correlation 0.970
+Quiet mic, DC offset -1355: full frame, reference correlation 0.970
+Constant DC only no complete frame
+Silence no complete frame
+Interrupted reception no complete frame
+Recovery after interruption: full frame, reference correlation 0.970
+Unsupported VIS no complete frame
+Slide01: full frame, reference correlation 0.904
+Slide02: full frame, reference correlation 0.972

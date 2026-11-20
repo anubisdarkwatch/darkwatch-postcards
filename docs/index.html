@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111512">
+  <title>Darkwatch Postcards · Sticky USB installer</title>
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./installer.js"></script>
+</head>
+<body>
+  <header><span class="brand">ANUBIS DARKWATCH</span><a href="https://github.com/anubisdarkwatch/darkwatch-postcards">GitHub ↗</a></header>
+  <main>
+    <section class="intro">
+      <div><p class="eyebrow">ROBOT 36 &nbsp;/&nbsp; SSTV RECEIVER</p>
+        <h1>Darkwatch<br>Postcards<span>.</span></h1>
+        <p class="lead">Turn a sound into a postcard. Play a Robot 36 transmission near your Sticky and watch the picture appear on e-paper.</p>
+      </div>
+      <figure><img src="./postcards/DW-001.png" width="320" height="240" alt="DW-001 reference postcard with the Anubis Darkwatch glyph"><figcaption><b>DW–001</b><span>320 × 240</span></figcaption></figure>
+    </section>
+    <section class="panel"><p class="eyebrow">FIRMWARE &nbsp;/&nbsp; v0.1.3</p>
+      <h2>Install on your Sticky</h2>
+      <p>For the 3.97-inch Seeed Studio reTerminal Sticky (ESP32-S3). Installation replaces the firmware and partition layout. Before your first install, save a <a href="https://github.com/anubisdarkwatch/darkwatch-postcards/blob/main/RECEIVER.md#install-on-a-seeed-reterminal-sticky">full factory backup</a>.</p>
+      <p>Connect the Sticky with a USB data cable, close any serial monitor, then select its CH343 port.</p>
+      <div class="actions">
+        <esp-web-install-button hidden manifest="./manifest.json">
+          <button slot="activate">Connect Sticky via USB</button>
+          <span slot="unsupported">Open this page in desktop Chrome or Edge to connect via USB.</span>
+          <span slot="not-allowed">Open this page over HTTPS or localhost to connect via USB.</span>
+        </esp-web-install-button>
+        <a download href="./firmware/Darkwatch-Postcards-Sticky-v0.1.3.bin">Download BIN ↓</a>
+      </div>
+      <p id="status" role="status">Loading USB installer…</p>
+      <noscript>Enable JavaScript for USB installation, or flash the BIN at 0x0 using esptool.</noscript>
+    </section>
+    <section class="panel"><p class="eyebrow">TEST TRANSMISSION &nbsp;/&nbsp; DW–001</p>
+      <h2>Receive your first postcard</h2>
+      <p>Tap <strong>AI/OK</strong> and wait for the listening screen. Place a speaker a few inches from the lower microphone, set a moderate volume, and play the track from the start. A full picture takes about 37 seconds.</p>
+      <audio controls preload="none" aria-label="DW-001 Robot 36 transmission" src="./postcards/DW-001-Robot36.wav"></audio>
+      <details><summary>Check the microphone</summary><p>Hold AI/OK for two seconds and release. When the Sticky prompts you, play the speaker check from the beginning. Look for a pilot near 1,900 Hz, header lock, and 240 rows.</p>
+        <audio controls preload="none" aria-label="DW-001 speaker check" src="./postcards/DW-001-Speaker-Check.wav"></audio></details>
+    </section>
+    <footer><a download href="./downloads/Darkwatch-Postcards-v0.1.3.zip">Download v0.1.3 source kit ↓</a><a href="https://github.com/anubisdarkwatch/darkwatch-postcards/blob/main/RECEIVER.md">Receiver guide ↗</a></footer>
+  </main>
+</body></html>
