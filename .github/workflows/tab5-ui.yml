@@ -1,0 +1,39 @@
+name: Tab5 color UI build
+on:
+  push:
+    branches: [tab5-color-ui]
+permissions:
+  contents: read
+jobs:
+  firmware:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: arduino/setup-arduino-cli@v2
+      - name: Install Tab5 dependencies
+        run: |
+          arduino-cli config init
+          arduino-cli config add board_manager.additional_urls https://espressif.github.io/arduino-esp32/package_esp32_index.json
+          arduino-cli core update-index
+          arduino-cli core install esp32:esp32@3.3.7
+          mkdir -p ~/Arduino/libraries
+          git clone https://github.com/m5stack/M5Unified ~/Arduino/libraries/M5Unified
+          git -C ~/Arduino/libraries/M5Unified checkout 96576a14247ddc935149145aa6b51943464120f1
+          git clone https://github.com/m5stack/M5GFX ~/Arduino/libraries/M5GFX
+          git -C ~/Arduino/libraries/M5GFX checkout 28d47949bdc84f30881623476f555398e2194313
+      - name: Compile for ESP32-P4 revision 1.3
+        run: |
+          arduino-cli compile --fqbn esp32:esp32:m5stack_tab5:ChipVariant=prev3,PSRAM=enabled --build-path /tmp/tab5 Tab5Postcards
+          python - <<'PY'
+          from pathlib import Path
+          app = Path('/tmp/tab5/Tab5Postcards.ino.bin').read_bytes()
+          merged = Path('/tmp/tab5/Tab5Postcards.ino.merged.bin').read_bytes()
+          end = 0x10000 + len(app)
+          assert merged[0x10000:end] == app and merged[0x2000] == 0xe9
+          assert all(b == 255 for b in merged[end:])
+          Path('Darkwatch-Tab5-Color-UI-before-v3.bin').write_bytes(merged[:end])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Darkwatch-Tab5-Color-UI-before-v3
+          path: Darkwatch-Tab5-Color-UI-before-v3.bin
