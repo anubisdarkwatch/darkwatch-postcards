@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#111512">
-  <title>Darkwatch Postcards · Sticky USB installer</title>
+  <title>Darkwatch Postcards · Tab5 and Sticky SSTV receivers</title>
   <link rel="stylesheet" href="./style.css">
   <link rel="stylesheet" href="./darkwatch.css">
   <link rel="icon" href="./anubis.png">
@@ -16,11 +16,21 @@
     <section class="intro">
       <div><p class="eyebrow">ROBOT 36 · PD90 · PD120</p>
         <h1>Darkwatch<br><em>Postcards</em></h1>
-        <p class="lead">Turn a sound into a postcard. Play a Robot 36, PD90, or PD120 transmission near your Sticky and watch the picture appear on e-paper.</p>
+        <p class="lead">Play an SSTV transmission near your receiver. Watch the postcard appear in full color on the M5Stack Tab5 or on the reTerminal Sticky’s e-paper display.</p>
+        <nav class="actions" aria-label="Choose your receiver"><a href="#tab5">M5Stack Tab5 ↓</a><a href="#sticky">reTerminal Sticky ↓</a></nav>
       </div>
-      <figure><div class="stamp" aria-hidden="true"><img src="./anubis.png" alt=""></div><img src="./sticky.webp" alt="The Sticky displaying the decoded Anubis postcard on e-paper"><figcaption><b>DW-001</b><span>Received on reTerminal Sticky</span></figcaption></figure>
+      <figure><div class="stamp" aria-hidden="true"><img src="./anubis.png" alt=""></div><img src="./tab5.webp" alt="M5Stack Tab5 displaying the decoded “Wish you were on this frequency” postcard in color"><figcaption><b>DW-001</b><span>PD120 · M5Stack Tab5</span></figcaption></figure>
     </section>
-    <section class="panel"><p class="eyebrow">FIRMWARE &nbsp;/&nbsp; v0.2.0</p>
+    <section class="panel" id="tab5"><p class="eyebrow">FULL COLOR &nbsp;/&nbsp; ESP32-P4</p>
+      <h2>Install on your Tab5</h2>
+      <p>This build is for the M5Stack Tab5 with an ESP32-P4 revision earlier than v3, including v1.3. Connect by USB and check your chip revision with <code>esptool chip-id</code> before flashing.</p>
+      <div class="actions"><a class="bin-link" download href="./firmware/Darkwatch-Tab5-Color-UI-before-v3.bin">Download Tab5 firmware ↓</a></div>
+      <details><summary>Flash with esptool v5</summary>
+        <p>Close any serial monitor. From the download folder, run the command below. Replace <code>COM20</code> with your Tab5’s port. This writes the merged firmware image starting at address zero.</p>
+        <pre><code>esptool --chip esp32p4 --port COM20 write-flash 0x0 Darkwatch-Tab5-Color-UI-before-v3.bin</code></pre>
+      </details>
+    </section>
+    <section class="panel" id="sticky"><p class="eyebrow">FIRMWARE &nbsp;/&nbsp; v0.2.0</p>
       <h2>Install on your Sticky</h2>
       <p>For the 3.97-inch Seeed Studio reTerminal Sticky (ESP32-S3). Installation replaces the firmware and partition layout. Before your first install, save a <a href="https://github.com/anubisdarkwatch/darkwatch-postcards/blob/main/RECEIVER.md#install-on-a-seeed-reterminal-sticky">full factory backup</a>.</p>
       <p>Connect the Sticky with a USB data cable, close any serial monitor, then select its CH343 port. When prompted, leave <strong>Erase device</strong> unchecked.</p>
@@ -32,12 +42,13 @@
         </esp-web-install-button>
         <a download href="./firmware/Darkwatch-Postcards-Sticky-v0.2.0.bin">Download BIN ↓</a>
       </div>
+      <details><summary>View the Sticky e-paper postcard</summary><img class="sticky-preview" loading="lazy" src="./sticky.webp" alt="DW-001 displayed on the reTerminal Sticky"></details>
       <p id="status" role="status">Loading USB installer…</p>
       <noscript>Enable JavaScript for USB installation, or flash the BIN at 0x0 using esptool.</noscript>
     </section>
     <section class="panel"><p class="eyebrow">TEST TRANSMISSION &nbsp;/&nbsp; DW–001</p>
       <h2>Receive your first postcard</h2>
-      <p>Tap <strong>AI/OK</strong> and wait for the listening screen. Place a speaker a few inches from the lower microphone, set a moderate volume, and play the track from the start. The Sticky detects the mode automatically and saves a 320 × 240 grayscale postcard.</p>
+      <p>Tap <strong>Listen</strong> on the Tab5 or press <strong>AI/OK</strong> on the Sticky. Once the receiver is listening, play a track from the beginning near its microphone at moderate volume. The receiver uses the opening tones to identify the mode.</p>
       <div class="wave" aria-hidden="true"><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i><i style="height:100%"></i></div>
       <p><strong>Robot 36</strong> · 37 seconds</p>
       <audio controls preload="none" aria-label="DW-001 Robot 36 transmission" src="./postcards/DW-001-Robot36.wav"></audio>
@@ -45,7 +56,7 @@
       <audio controls preload="none" aria-label="DW-001 PD90 transmission" src="./postcards/DW-001-PD90.flac"></audio>
       <p><strong>PD120</strong> · 2 min 7 sec</p>
       <audio controls preload="none" aria-label="DW-001 PD120 transmission" src="./postcards/DW-001-PD120.flac"></audio>
-      <details><summary>Check the microphone</summary><p>Hold AI/OK for two seconds and release. When the Sticky prompts you, play the speaker check from the beginning. Look for a pilot near 1,900 Hz, header lock, and 240 rows.</p>
+      <details><summary>Check the Sticky microphone</summary><p>Hold AI/OK for two seconds and release. When the Sticky prompts you, play the speaker check from the beginning. Look for a pilot near 1,900 Hz, header lock, and 240 rows.</p>
         <audio controls preload="none" aria-label="DW-001 speaker check" src="./postcards/DW-001-Speaker-Check.wav"></audio></details>
     </section>
     <footer><span class="signature">CYBER // RF // MAKER</span><a href="https://github.com/anubisdarkwatch/darkwatch-postcards/archive/refs/heads/main.zip">Download project source ↓</a><a href="https://github.com/anubisdarkwatch/darkwatch-postcards/blob/main/RECEIVER.md">Receiver guide ↗</a></footer>

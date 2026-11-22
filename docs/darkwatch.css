@@ -44,3 +44,8 @@ h1 em{font-style:normal}
 .panel+.panel{border-top-color:#d69943;background:#181815}
 .wave{max-width:520px}
 @media(max-width:650px){figure{width:calc(100% - 20px);max-width:420px;margin:8px auto}.brand{gap:6px}header{gap:8px}.brand strong{font-size:14px}}
+
+.bin-link{display:inline-block;padding:10px 16px;border-radius:5px;background:var(--amber);color:#17130a;font-weight:700;text-decoration:none}
+.bin-link:hover{background:#ffca50;color:#17130a}
+.panel pre{overflow-x:auto;max-width:100%;padding:12px;background:#090c0d;color:#e6eadd}
+.sticky-preview{display:block;width:min(100%,420px);height:auto;margin-top:12px}
