@@ -6,7 +6,9 @@
 constexpr uint32_t black=0x080d0b, panel=0x15211c, amber=0xffb000, green=0x86f79a, ivory=0xe8eee7;
 uint8_t *frame;
 ColorReceiver *rx;
-int16_t pcm[2][512];
+// Each queued buffer covers 128 ms of audio at the decoder rate.
+constexpr int blockSamples=2048;
+int16_t pcm[2][blockSamples];
 unsigned active=0;
 bool listening=false;
 int rendered=0;
@@ -82,7 +84,7 @@ void setup() {
     screen(rx?"Ready":"Memory error",rx?"Tap Listen to receive":"PSRAM unavailable");
 }
 void loop() {
-    M5.update();
+    if (!listening) M5.update();
     if(!rx) {delay(10);return;}
     if(!listening) {
         auto t=M5.Touch.getDetail();
@@ -90,12 +92,15 @@ void loop() {
            t.y<M5.Display.height()-122 || t.y>M5.Display.height()-50) {delay(4);return;}
         rx->reset();active=0;
         listening=true;
-        screen("Listening","Play audio from the beginning");
-        if(!M5.Mic.begin() || !M5.Mic.record(pcm[0],512,16000)) {
+        screen("Listening","Microphone starting");
+        M5.Display.fillRect(48,140,640,496,black);
+        if(!M5.Mic.begin() || !M5.Mic.record(pcm[0],blockSamples,16000)) {
             listening=false;screen("Mic error","Tap Listen to retry");return;
         }
+        M5.Display.fillRect(740,198,510,44,black);
+        label(740,210,2,ivory,"Play audio from the beginning");
     }
-    if(!M5.Mic.record(pcm[1-active],512,16000)) {
+    if(!M5.Mic.record(pcm[1-active],blockSamples,16000)) {
         M5.Mic.end();listening=false;screen("Mic error","Tap Listen to retry");return;
     }
     while(M5.Mic.isRecording()>1) delay(1);
@@ -103,13 +108,18 @@ void loop() {
         auto ev=rx->push(sample);
         if(ev==ColorReceiver::Locked) {
             rendered=0;
-            M5.Display.fillRect(48,140,640,496,black);
+
             M5.Display.fillRect(740,140,500,150,black);
             label(740,150,3,green,ColorReceiver::modeName(rx->vis()));
             label(740,210,2,ivory,"Receiving");
             M5.Display.fillRect(740,255,360,8,panel);
         } else if(ev==ColorReceiver::Lost) {
-            rendered=0;screen("Sync lost","Listening for next header");
+            char detail[64];
+            snprintf(detail,sizeof(detail),"%s lost at row %d; replay from start",ColorReceiver::modeName(rx->vis()),rendered);
+            rendered=0;
+            M5.Display.fillRect(740,140,525,150,black);
+            label(740,150,3,amber,"Listening");
+            label(740,210,2,ivory,detail);
         } else if(ev==ColorReceiver::Complete) {
             M5.Mic.end();listening=false;
             bool ok=writeBmp();
@@ -117,6 +127,6 @@ void loop() {
             rendered=0;drawRows(rx->height());break;
         }
     }
-    if(listening && rx->receiving()) drawRows(rx->rows() & ~1);
+    if(listening && rx->receiving() && (rx->rows() & ~1)>rendered) drawRows(rx->rows() & ~1);
     active=1-active;
 }
